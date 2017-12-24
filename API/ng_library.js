@@ -19,14 +19,18 @@ function onMedalsLoaded(result) {
 function ng_initialize(){
 
 	/* load our medals  from the server */
-	ngio.queueComponent("Medal.getList", {}, onMedalsLoaded);
-	ngio.executeQueue();
+	loadMedals();
 
     /* setup medalcarrier */
     _createMedalUI();
 	
 }
 
+/* load our medals  from the server */
+function loadMedals(){	
+	ngio.queueComponent("Medal.getList", {}, onMedalsLoaded);
+	ngio.executeQueue();
+}
 
 var _createMedalUI = function(){
 
@@ -154,7 +158,6 @@ var _showMedal = function(medal){
         medal_container.style.left = '-310px';
     },1000);
     
-
     document.getElementById('icon').src = medal.icon;
     document.getElementById('medal_description').innerHTML = medal.name;
     var points = ["bogus", "5", "10", "25", "50", "100"];
@@ -174,14 +177,25 @@ function ng_unlockmedal(medal_name) {
         /* look for a matching medal name */
         if (medal.name == medal_name) {
 
-                 /* unlock the medal from the server */
-                // ngio.callComponent('Medal.unlock', {id:medal.id}, function(result) {
+              
+        		//Unlock and display if it's not unlocked yet
+                if(!medal.unlocked)
+                {
+                	/* unlock the medal from the server */
+	                ngio.callComponent('Medal.unlock', {id:medal.id}, function(result) {
 
-                //     if (result.success) _showMedal(result.medal);
+	                    if (result.success) 
+	                    	{
+	                    		_showMedal(result.medal);
+	                    		//Updates medals lock states
+	                    		loadMedals();
+	                    	}
 
-                // });
+	                });
 
-                _showMedal(medal);
+
+                	// _showMedal(medal);
+                }
 
             return;
         }
