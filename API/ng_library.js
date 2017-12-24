@@ -187,17 +187,18 @@ function ng_unlockmedal(medal_name) {
 	                    if (result.success) 
 	                    	{
 	                    		_showMedal(result.medal);
+
 	                    		//Updates medals lock states
 	                    		loadMedals();
 	                    	}
 
 	                });
 
-
-                	// _showMedal(medal);
                 }
 
-            return;
+            //Use this return value inside your desired engine 
+            //to choose whether to play sound or not
+            return !medal.unlocked;
         }
     }
 }
