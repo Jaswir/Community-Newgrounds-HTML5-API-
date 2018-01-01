@@ -46,11 +46,10 @@ var _createMedalUI = function(){
 	        "top: 51px; "+
 	        "left: -310px; "+
 	        "overflow:hidden; "+
-	        "-webkit-transition:left 0.5s ease-in-out;"+
-	        " -moz-transition:left 0.5s ease-in-out;"+
-	        " -ms-transition:left 0.5s ease-in-out; "+
-	        "-o-transition:left 0.5s ease-in-out;"+
-	        " transition:left 0.5s ease-in-out;'>"+
+	        "-webkit-transition:left 0.5s ease;"+
+	        " -moz-transition:left 0.5s ease;"+
+	        " -ms-transition:left 0.5s ease; "+
+	        "-o-transition:left 0.5s ease;"+
 	        "<div id = 'inner_medal' style = "+
         		"'left : -1px; "+
         		"position: relative;'>"+
@@ -156,7 +155,7 @@ var _showMedal = function(medal){
     medal_container.style.left = '10px';
     setTimeout(function(){
         medal_container.style.left = '-310px';
-    },1000);
+    },2000);
     
     document.getElementById('icon').src = medal.icon;
     document.getElementById('medal_description').innerHTML = medal.name;
@@ -193,12 +192,12 @@ function ng_unlockmedal(medal_name) {
 		               		});   
 					}, 
 
-					2000 * (to_unlock.length - 1));	
+					2500 * (to_unlock.length - 1));	
         	}
   
             // I use this return value inside gamemaker to play the audio effect at the right time
-            var sfxTimeout = 2000 * (to_unlock.length - 1);
-            // if(medal.unlocked) sfxTimeout = -1;
+            var sfxTimeout = 2500 * (to_unlock.length - 1);
+            if(medal.unlocked) sfxTimeout = -1;
             return sfxTimeout;      	
         }
 	}
