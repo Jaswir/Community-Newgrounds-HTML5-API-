@@ -7,7 +7,7 @@ function ng_connect(app_id, encryption_key){
 
 
 /* medal vars */
-var medals;
+var medals, scoreboards;
 var medalDOM = document.createElement("div");
 
 /* handle loaded medals */
@@ -15,11 +15,18 @@ function onMedalsLoaded(result) {
     if (result.success) medals = result.medals;
 }
 
+/* handle loaded scores */
+function onScoreboardsLoaded(result) {
+    if (result.success) scoreboards = result.scoreboards;
+}
+
 
 function ng_initialize(){
 
-	/* load our medals  from the server */
-	_loadMedals();
+	/*load medals and scoreboards from the server */
+	ngio.queueComponent("ScoreBoard.getBoards", {}, onScoreboardsLoaded);
+	ngio.queueComponent("Medal.getList", {}, onMedalsLoaded);
+	ngio.executeQueue();
 
     /* setup medalcarrier */
     _createMedalUI();
@@ -169,6 +176,10 @@ var to_unlock = []
 function ng_unlockmedal(medal_name) {
 
    
+	 /* If there is no user attached to our ngio object, it means the user isn't logged in and we can't post anything */
+    // if (!ngio.user) return;
+
+
     for (var i = 0; i < medals.length; i++) {
 
         var medal = medals[i];
@@ -201,6 +212,24 @@ function ng_unlockmedal(medal_name) {
             return sfxTimeout;      	
         }
 	}
-}
+  }
+
+	function ng_postScore(board_name, score_value) {
+
+		 /* If there is no user attached to our ngio object, it means the user isn't logged in and we can't post anything */
+	    // if (!ngio.user) return;
+	    var score;
+
+	    for (var i = 0; i < scoreboards.length; i++) {
+
+	        scoreboard = scoreboards[i];
+
+	        ngio.callComponent('ScoreBoard.postScore', {id:scoreboard.id, value:score_value});
+	    }
+	}
+
+	
+
+
 
 
